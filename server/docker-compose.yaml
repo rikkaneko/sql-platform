@@ -1,0 +1,24 @@
+version: '3'
+
+services:
+  mariadb-server:
+    container_name: mariadb-server
+    image: mariadb:latest
+    userns_mode: keep-id
+    restart: always
+    ports:
+      - "127.0.0.1:3306:3306"
+    volumes:
+      - ./conf.d:/etc/mysql/conf.d
+      - ./mariadb-data:/var/lib/mysql
+    env_file: .env
+  
+  phpmyadmin:
+    container_name: phpmyadmin
+    image: phpmyadmin:apache
+    restart: always
+    ports:
+      - "127.0.0.1:8080:8080"
+    volumes:
+      - ./conf.d/config.user.inc.php:/etc/phpmyadmin/config.user.inc.php
+    env_file: .env
